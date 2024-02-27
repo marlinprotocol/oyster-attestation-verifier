@@ -19,3 +19,5 @@ thiserror = "1.0.56"
 strip = true
 lto = true
 panic = "abort"
+
+# cargo run --release -- --secp256k1-secret secp.sec --secp256k1-public secp.pub --ip 127.0.0.1 --port 1400

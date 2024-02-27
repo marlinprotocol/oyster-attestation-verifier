@@ -3,6 +3,10 @@ use std::error::Error;
 use std::num::TryFromIntError;
 
 use actix_web::{error, http::StatusCode, post, web, Responder};
+use ethers::{
+    core::k256::elliptic_curve::bigint::U64,
+    signers::{LocalWallet, Signer},
+};
 use libsodium_sys::crypto_sign_verify_detached;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -165,24 +169,19 @@ async fn verify(
         req.timestamp,
     );
 
-    let response_msg = ethers::utils::keccak256(abi_encoded);
-    let response_msg = secp256k1::Message::from_digest_slice(&response_msg)
-        .map_err(UserError::MessageGeneration)?;
+    let digest = ethers::utils::keccak256(abi_encoded);
 
-    let secp = secp256k1::Secp256k1::new();
-    let (recid, sig) = secp
-        .sign_ecdsa_recoverable(&response_msg, &state.secp256k1_secret)
-        .serialize_compact();
+    let hardcoded_priv_key = "4a30b21f0359043a0fb1d45e3a768e3040b82ffc63a1632d9bf9568d3565d4d5";
+    let local_signer = hardcoded_priv_key.parse::<LocalWallet>().unwrap();
 
-    let sig = hex::encode(sig);
-    let recid: u8 = recid
-        .to_i32()
-        .try_into()
-        .map_err(UserError::InvalidRecovery)?;
-    let recid = hex::encode([recid + 27]);
+    let signature = local_signer
+        .sign_message(ethers::types::H256(digest))
+        .await
+        .unwrap();
+    println!("Signature: {:?}", signature);
 
     Ok(web::Json(VerifyAttestationResponse {
-        signature: sig + &recid,
+        signature: signature.to_string(),
         secp256k1_public: hex::encode(state.secp256k1_public),
     }))
 }
