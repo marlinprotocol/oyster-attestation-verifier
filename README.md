@@ -4,7 +4,7 @@
 
 The attestation verifier verifies attestations provided by the [attestation server](https://github.com/marlinprotocol/oyster-attestation-server) containing a secp256k1 public key and signs the response using its own secp256k1 key. Intended to be run inside an enclave to provide cheap attestation verification services.
 
-Once the attestation of the verfier is verified on-chain (very expensive), it enables other enclaves, including other verifiers, to get verified by submitting a simple ECDSA signature from the verifier instead (very cheap). The process essentially extends the chain of trust of the attestation verifier enclave instead of trying to verify the full attestation of the other enclave again.
+Once the attestation of the verifier is verified on-chain (very expensive), it enables other enclaves, including other verifiers, to get verified by submitting a simple ECDSA signature from the verifier instead (very cheap). The process essentially extends the chain of trust of the attestation verifier enclave instead of trying to verify the full attestation of the other enclave again.
 
 ## Build
 
@@ -53,6 +53,30 @@ Options:
           Print help
   -V, --version
           Print version
+```
+
+## CLI Verification
+The attestation verifier also includes a binary to verify an attestation doc locally through the CLI as shown below :- 
+
+```
+$ ./target/release/oyster-verify-attestation --help
+Usage: oyster-verify-attestation --attestation <ATTESTATION>
+
+Options:
+      --attestation <ATTESTATION>  
+          path to attestation doc hex string file
+  -h, --help                       Print help
+  -V, --version                    Print version
+```
+
+Above execution will return an error if failing to parse or verify the attestation doc/file. 
+If the verification completes successfully, the parsed attestation doc will be printed in below format :- 
+```
+AttestationDecoded {
+    pcrs: [[...], [...], [...]],
+    timestamp: '...',
+    public_key: [...]
+}
 ```
 
 ## Endpoints

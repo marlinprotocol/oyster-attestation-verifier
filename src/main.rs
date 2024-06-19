@@ -1,10 +1,10 @@
+mod handler;
+
 use std::fs;
 
 use actix_web::{web, App, HttpServer};
 use anyhow::{Context, Result};
 use clap::Parser;
-
-use verifier::handler::{verify_hex, verify_raw, AppState};
 
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
@@ -52,12 +52,12 @@ async fn main() -> Result<()> {
 
     let server = HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(AppState {
+            .app_data(web::Data::new(handler::AppState {
                 secp256k1_secret,
                 secp256k1_public,
             }))
-            .service(verify_raw)
-            .service(verify_hex)
+            .service(handler::verify_raw)
+            .service(handler::verify_hex)
     })
     .bind((cli.ip.clone(), cli.port))
     .context("unable to start the server")?

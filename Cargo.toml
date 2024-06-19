@@ -3,17 +3,13 @@ name = "oyster-attestation-verifier"
 version = "2.1.0"
 edition = "2021"
 
-[lib]
-name = "verifier"
-path = "src/lib.rs"
-
 [[bin]]
-name = "attestation-verifier"
+name = "oyster-attestation-verifier"
 path = "src/main.rs"
 
 [[bin]]
-name = "attestation-verifier-cli"
-path = "src/main_cli.rs"
+name = "oyster-verify-attestation"
+path = "src/cli_attestation_verifier.rs"
 
 [dependencies]
 actix-web = "4.4.0"
@@ -23,8 +19,8 @@ ethers = "2.0.10"
 hex = "0.4.3"
 hex-literal = "0.4.1"
 libsodium-sys-stable = "1.19.30"
-oyster-sdk = "0.8.2"
-secp256k1 = { version = "0.28.0", features = ["recovery"] }
+oyster-sdk = "0.8.3"
+secp256k1 = { version = "0.29.0", features = ["recovery"] }
 serde = { version = "1.0.152", features = ["derive"] }
 thiserror = "1.0.56"
 
