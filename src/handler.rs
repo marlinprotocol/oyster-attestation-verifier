@@ -21,8 +21,8 @@ struct HexAttestation {
     attestation: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
-pub struct VerifyAttestationResponse {
+#[derive(Serialize, Deserialize)]
+struct VerifyAttestationResponse {
     signature: String,
     secp256k1_public: String,
     pcr0: String,
@@ -125,11 +125,11 @@ fn compute_digest(
     ethers::utils::keccak256(encoded_message)
 }
 
-pub fn verify(
+fn verify(
     attestation: Vec<u8>,
     secret: &secp256k1::SecretKey,
     public: &[u8; 64],
-) -> actix_web::Result<VerifyAttestationResponse, UserError> {
+) -> actix_web::Result<impl Responder, UserError> {
     let parsed = oyster::decode_attestation(attestation.clone())
         .map_err(UserError::AttestationVerification)?;
     oyster::verify_with_timestamp(attestation, parsed.pcrs, parsed.timestamp)
@@ -160,7 +160,7 @@ pub fn verify(
         .map_err(UserError::InvalidRecovery)?;
     let recid = hex::encode([recid + 27]);
 
-    Ok(VerifyAttestationResponse {
+    Ok(web::Json(VerifyAttestationResponse {
         signature: sig + &recid,
         secp256k1_public: hex::encode(requester_secp256k1_public),
         pcr0: hex::encode(parsed.pcrs[0]),
@@ -168,7 +168,7 @@ pub fn verify(
         pcr2: hex::encode(parsed.pcrs[2]),
         timestamp: parsed.timestamp,
         verifier_secp256k1_public: hex::encode(public),
-    })
+    }))
 }
 
 #[post("/verify/raw")]
@@ -181,7 +181,6 @@ async fn verify_raw(
         &state.secp256k1_secret,
         &state.secp256k1_public,
     )
-    .map(|response| web::Json(response))
 }
 
 #[post("/verify/hex")]
@@ -196,7 +195,6 @@ async fn verify_hex(
         &state.secp256k1_secret,
         &state.secp256k1_public,
     )
-    .map(|response| web::Json(response))
 }
 
 #[cfg(test)]
