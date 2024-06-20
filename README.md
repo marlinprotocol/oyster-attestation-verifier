@@ -79,6 +79,14 @@ AttestationDecoded {
 }
 ```
 
+To generate the attestation hex file, call the corresponding `attestation-server` endpoint inside a running enclave like below:-
+```
+$ curl <attestation_server_ip:attestation_server_port>/attestation/hex --output attestation.hex
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  8938  100  8938    0     0   126k      0 --:--:-- --:--:-- --:--:--  124k
+```
+
 ## Endpoints
 
 The attestation verifier exposes two verification endpoints which expect the attestation in one of two formats - raw and hex. The formats match the two endpoints of the [attestation server](https://github.com/marlinprotocol/oyster-attestation-server) and the response of the server can just be sent to the verifier as is.

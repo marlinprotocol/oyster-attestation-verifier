@@ -231,16 +231,16 @@ mod tests {
         let resp: VerifyAttestationResponse =
             test::try_call_and_read_body_json(&app, req).await.unwrap();
 
-        assert_eq!(resp.signature, "f718575e19ab6eade345f0adb8e7a57dffbd8892d12d28ecd0bf4c454962c7360fc8bbbd42654c94f6ab47c85b7b7a04e290a3a8167270ec096acddff4311d341b");
-        assert_eq!(resp.secp256k1_public, "5ed336eea42b3e6b6cbd1c57e4606eea1446a3226b338d724a3c56d12cc221ff6debe58ea513a1e4b429ca8c2d4c916936663adcddb44058b2bac15223a9c9c8");
-        assert_eq!(resp.pcr0, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        assert_eq!(resp.pcr1, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        assert_eq!(resp.pcr2, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+        assert_eq!(resp.signature, "75e16c4de199d25b9342615598d24619b2020fe3e69667f962e56723ad048c7548b63e54e4954c0e21f0ea8fdecdb7cecba3e743e3a0ab06d07181c2337b76e21c");
+        assert_eq!(resp.secp256k1_public, "d6e5fcbea3aa507a71c36ea8e3ac12db058653b054803a9ccb4f9f38dec704b5818e41e68f2f46bba87ab9ae88c7d853495c3427907c18c52f669c52697da391");
+        assert_eq!(resp.pcr0, "bee9db5a448337748ac99fdaa3289ff180c6f6bc7873703d882a4e3e22b1a671a2544751336a7a2e2d84a8776b12404c");
+        assert_eq!(resp.pcr1, "bcdf05fefccaa8e55bf2c8d6dee9e79bbff31e34bf28a99aa19e6b29c37ee80b214a414b7607236edf26fcb78654e63f");
+        assert_eq!(resp.pcr2, "b9f3530d519e97e044becc80d98da4f2cd4adb3d0f67c33df5c854788431bf61db7fcef84046ac0c3087e945ff2cfbed");
         assert_eq!(
             resp.verifier_secp256k1_public,
             hex::encode(secp256k1_public)
         );
-        assert_eq!(resp.timestamp, 1718795246367);
+        assert_eq!(resp.timestamp, 1718876257466);
     }
 
     #[actix_web::test]
@@ -271,16 +271,16 @@ mod tests {
 
         let resp: VerifyAttestationResponse =
             test::try_call_and_read_body_json(&app, req).await.unwrap();
-
-        assert_eq!(resp.signature, "f78836377ecf6f81ba873177711c5f8b43ee8077f898a72e63856387853a7db647284b70ee2fdb04289c007cebe249ba41ef981819d25d679f58f1e1414b3df61b");
-        assert_eq!(resp.secp256k1_public, "5ed336eea42b3e6b6cbd1c57e4606eea1446a3226b338d724a3c56d12cc221ff6debe58ea513a1e4b429ca8c2d4c916936663adcddb44058b2bac15223a9c9c8");
-        assert_eq!(resp.pcr0, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        assert_eq!(resp.pcr1, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
-        assert_eq!(resp.pcr2, "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000");
+  
+        assert_eq!(resp.signature, "533b82a5c6e0bd4306a9852ffeff05904684d42f902b15888802371588a2c1832607a0f3b4b4331aa9fb278ebab02cd040e33e72922860dab5cf4920bc6c5e491c");
+        assert_eq!(resp.secp256k1_public, "d6e5fcbea3aa507a71c36ea8e3ac12db058653b054803a9ccb4f9f38dec704b5818e41e68f2f46bba87ab9ae88c7d853495c3427907c18c52f669c52697da391");
+        assert_eq!(resp.pcr0, "bee9db5a448337748ac99fdaa3289ff180c6f6bc7873703d882a4e3e22b1a671a2544751336a7a2e2d84a8776b12404c");
+        assert_eq!(resp.pcr1, "bcdf05fefccaa8e55bf2c8d6dee9e79bbff31e34bf28a99aa19e6b29c37ee80b214a414b7607236edf26fcb78654e63f");
+        assert_eq!(resp.pcr2, "b9f3530d519e97e044becc80d98da4f2cd4adb3d0f67c33df5c854788431bf61db7fcef84046ac0c3087e945ff2cfbed");
         assert_eq!(
             resp.verifier_secp256k1_public,
             hex::encode(secp256k1_public)
         );
-        assert_eq!(resp.timestamp, 1718795236845);
+        assert_eq!(resp.timestamp, 1718876266772);
     }
 }
