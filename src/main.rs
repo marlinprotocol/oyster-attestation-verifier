@@ -6,8 +6,6 @@ use actix_web::{web, App, HttpServer};
 use anyhow::{Context, Result};
 use clap::Parser;
 
-use handler::AppState;
-
 #[derive(Parser)]
 #[command(author, version, about, long_about = None)]
 struct Cli {
@@ -54,7 +52,7 @@ async fn main() -> Result<()> {
 
     let server = HttpServer::new(move || {
         App::new()
-            .app_data(web::Data::new(AppState {
+            .app_data(web::Data::new(handler::AppState {
                 secp256k1_secret,
                 secp256k1_public,
             }))
