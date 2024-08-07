@@ -264,3 +264,9 @@ function _verify(bytes memory signature, Attestation memory attestation) interna
     ...
 }
 ```
+
+## Running unit tests
+Before pushing any changes, try to make sure that no existing functionalities are breaking by running the unit tests. Tests require fresh attestation so update the sample data present in `src/test/` directory by interacting with a running oyster enclave's attestation server (as described above).
+```
+cargo test
+```
