@@ -21,8 +21,12 @@ hex-literal = "0.4.1"
 libsodium-sys-stable = "1.19.30"
 oyster-sdk = "0.8.3"
 secp256k1 = { version = "0.29.0", features = ["recovery"] }
-serde = { version = "1.0.152", features = ["derive"] }
+serde = { version = "^1.0.152", features = ["derive"] }
 thiserror = "1.0.56"
+
+kalypso_helper = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "helper" }
+kalypso_ivs_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "ivs" }
+kalypso_generator_models = { git = "https://github.com/marlinprotocol/kalypso-unified.git", branch = "listener-refined", package = "generator" }
 
 [profile.release]
 strip = true
