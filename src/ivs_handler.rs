@@ -1,7 +1,7 @@
 use actix_web::{get, http::StatusCode, post, web, HttpResponse, Responder};
 use ethers::{
     core::k256::ecdsa::SigningKey,
-    signers::{LocalWallet, Wallet},
+    signers::{LocalWallet, Signer, Wallet},
 };
 
 use crate::handler::AppState;
@@ -50,21 +50,31 @@ async fn get_attestation_for_invalid_inputs(
     let ecies_priv_key = &state.secp256k1_secret.secret_bytes().to_vec();
     let signer_wallet = get_signer(ecies_priv_key.clone());
 
-    let ask_id = payload.only_ask_id();
     let attestation_bytes = payload.get_public();
 
     if check_input(attestation_bytes.clone()).valid {
         return HttpResponse::BadRequest()
             .json(kalypso_ivs_models::models::CheckInputResponse { valid: true });
     }
-    return HttpResponse::Ok().json(
-        kalypso_helper::attestation_helpers::generate_invalid_input_attestation(
-            ask_id,
-            attestation_bytes.into(),
-            signer_wallet,
-        )
-        .await,
-    );
+
+    let ask_id = payload.only_ask_id();
+    let value = vec![
+        ethers::abi::Token::Uint(ask_id.into()),
+        ethers::abi::Token::Bytes(attestation_bytes),
+    ];
+    let encoded = ethers::abi::encode(&value);
+    let digest = ethers::utils::keccak256(encoded);
+
+    let signature = signer_wallet
+        .sign_message(ethers::types::H256(digest))
+        .await
+        .unwrap();
+
+    let response = kalypso_generator_models::models::GenerateProofResponse {
+        proof: signature.to_vec(),
+    };
+
+    return HttpResponse::Ok().json(response);
 }
 
 #[post("/verifyInputsAndProof")]

@@ -59,10 +59,13 @@ async fn main() -> Result<()> {
             }))
             .service(handler::verify_raw)
             .service(handler::verify_hex)
-            .service(ivs_handler::test)
-            .service(ivs_handler::check_input_handler)
-            .service(ivs_handler::get_attestation_for_invalid_inputs)
-            .service(ivs_handler::verify_inputs_and_proof)
+            .service(
+                web::scope("/api")
+                    .service(ivs_handler::test)
+                    .service(ivs_handler::check_input_handler)
+                    .service(ivs_handler::get_attestation_for_invalid_inputs)
+                    .service(ivs_handler::verify_inputs_and_proof),
+            )
     })
     .bind((cli.ip.clone(), cli.port))
     .context("unable to start the server")?
