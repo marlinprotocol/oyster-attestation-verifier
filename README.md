@@ -1,5 +1,9 @@
 ![Marlin Oyster Logo](./logo.svg)
 
+# Archival
+
+Archived in favour of https://github.com/marlinprotocol/oyster-monorepo
+
 # Attestation Verifier
 
 The attestation verifier verifies attestations provided by the [attestation server](https://github.com/marlinprotocol/oyster-attestation-server) containing a secp256k1 public key and signs the response using its own secp256k1 key. Intended to be run inside an enclave to provide cheap attestation verification services.
